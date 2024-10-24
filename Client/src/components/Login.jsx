@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextField, Button, Paper, Typography, Box, Link } from "@mui/material";
+import { TextField, Button, Paper, Typography, Box, Link,  CircularProgress,
+} from "@mui/material";
 import { Grid, Avatar } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,11 +11,14 @@ const Login = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
+
   const navigate = useNavigate();
 
   const getInputData = async (e) => {
     e.preventDefault();
-    const API_END_POINT = "http://localhost:3001/user";
+    const API_END_POINT = "https://moviehub-4awk.onrender.com/user";
+    setLoading(true);
     if (isLogin) {
       // Login
       const user = { email, password };
@@ -66,6 +70,7 @@ const Login = () => {
     setFullName("");
     setEmail("");
     setPassword("");
+    setLoading(false); 
   };
 
   const paperStyle = {
@@ -86,8 +91,14 @@ const Login = () => {
       bgcolor="#263238"
     >
       <NavBar />
-<Toaster/>
-      <Paper elevation={10} style={paperStyle}>
+      <Toaster/>
+
+      
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <CircularProgress />
+        </Box>
+      ):(      <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle}></Avatar>
         </Grid>
@@ -167,6 +178,7 @@ const Login = () => {
           </Link>
         </Typography>
       </Paper>
+)}
     </Box>
   );
 };
